@@ -10,8 +10,8 @@ debug 'Bringing container up'
 utils.lxc.start
 
 # Sleep for a bit so that the container can get an IP
-log 'Sleeping for 5 seconds...'
-sleep 5
+log 'Sleeping for 10 seconds...'
+sleep 10
 
 # TODO: Support for appending to this list from outside
 PACKAGES=(vim curl wget man-db bash-completion python-software-properties ca-certificates sudo)
@@ -62,7 +62,12 @@ if [ $PUPPET = 1 ]; then
     wget http://apt.puppetlabs.com/puppetlabs-release-stable.deb -O "${ROOTFS}/tmp/puppetlabs-release-stable.deb" &>>${LOG}
     utils.lxc.attach dpkg -i "/tmp/puppetlabs-release-stable.deb"
     utils.lxc.attach apt-get update
-    utils.lxc.attach apt-get install puppet -y --force-yes
+
+    if [[ ! -z ${PUPPET_VERSION} ]] && [[ ! -z ${FACTER_VERSION} ]]; then
+        utils.lxc.attach apt-get install puppet=${PUPPET_VERSION} puppet-common=${PUPPET_VERSION} facter=${FACTER_VERSION} -y --force-yes
+    else
+        utils.lxc.attach apt-get install puppet -y --force-yes
+    fi
   fi
 else
   log "Skipping Puppet installation"
