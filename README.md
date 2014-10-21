@@ -3,6 +3,10 @@
 This repository contains a set of scripts for creating base boxes for usage with
 [vagrant-lxc](https://github.com/fgrehm/vagrant-lxc) 1.0+.
 
+This is a fork of the original https://github.com/fgrehm/vagrant-lxc-base-boxes.
+It differs in two parameter you can specify to install a specific version of puppet in
+your Debian box.
+
 ## What distros / versions can I build with this?
 
 * Ubuntu
@@ -43,6 +47,14 @@ make precise
 Will build a Ubuntu Precise x86_64 box with latest Puppet, Chef, Salt and
 Babushka pre-installed.
 
+You can install a specific version of puppet in your Debian box like that:
+
+```sh
+PUPPET=1 \
+PUPPET_VERSION=2.7.25-1puppetlabs1 \
+FACTER_VERSION=1.7.6-1puppetlabs1 \
+make wheezy
+```
 
 ## Pre built base boxes
 
